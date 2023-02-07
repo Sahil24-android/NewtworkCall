@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this,2)
         recyclerView.adapter = mAdapter
         recyclerView.setHasFixedSize(true)
+        val itemTouchHelper = ItemTouchHelper(MovieItemAdapter.SwipeToDeleteCallback(mAdapter))
+        itemTouchHelper.attachToRecyclerView(recyclerView)
         dbHelper = TvShowDataHelper(this)
         fetchDataFromDatabase()
 

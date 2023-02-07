@@ -5,11 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.networkcall.R
 import com.example.networkcall.data.DataItem
-import org.w3c.dom.Text
 
 class MovieItemAdapter: RecyclerView.Adapter<MovieItemAdapter.MovieViewHolder>() {
     private val list: ArrayList<DataItem> = ArrayList()
@@ -27,6 +27,14 @@ class MovieItemAdapter: RecyclerView.Adapter<MovieItemAdapter.MovieViewHolder>()
         holder.date.text = current.airdate
         holder.description.text = current.summary
 
+        holder.description.setOnClickListener {
+            if (holder.description.maxLines == Integer.MAX_VALUE){
+                holder.description.maxLines =2
+            }else{
+                holder.description.maxLines = Integer.MAX_VALUE
+            }
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -38,6 +46,10 @@ class MovieItemAdapter: RecyclerView.Adapter<MovieItemAdapter.MovieViewHolder>()
         list.addAll(updateCourse)
         notifyDataSetChanged()
     }
+    fun deleteTVShow(position: Int) {
+        list.removeAt(position)
+        notifyItemRemoved(position)
+    }
 
     class MovieViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
 
@@ -45,6 +57,19 @@ class MovieItemAdapter: RecyclerView.Adapter<MovieItemAdapter.MovieViewHolder>()
         val nameMovie = itemView.findViewById<TextView>(R.id.name)
         val date = itemView.findViewById<TextView>(R.id.date)
         val description = itemView.findViewById<TextView>(R.id.description)
+    }
+
+     class SwipeToDeleteCallback(private val adapter: MovieItemAdapter) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            return false
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.adapterPosition
+            adapter.deleteTVShow(position)
+
+        }
     }
 
 }

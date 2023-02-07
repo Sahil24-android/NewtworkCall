@@ -45,7 +45,6 @@ class TvShowDataHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         values.put(DATE, item.airdate)
         values.put(SHORT_DESCRIPTION, item.summary)
         values.put(IMAGE, item.image)
-//        Log.d("sumfromenrollnow",sum.toString())
         val _success = db.insert(TABLE_NAME, null, values)
         db.close()
         return (Integer.parseInt("$_success") != -1)
@@ -56,7 +55,6 @@ class TvShowDataHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         val cartItem = ArrayList<DataItem>()
 
         val db = this.readableDatabase
-//        val values = ContentValues()
         val selectQuery = "SELECT * FROM $TABLE_NAME"
         val cursor = db.rawQuery(selectQuery, null)
 
